@@ -1,0 +1,39 @@
+﻿
+@using WebClient.Services;
+@inject DragAndDropService DragAndDropService
+
+<div ondragover="event.preventDefault()" @ondrop="@OnDrop"
+     class="@canDragClass"
+     @ondragenter="HandleDragEnter"
+     @ondragleave="HandleDragLeave">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public MenuItem Zone { get; set; }
+
+    [Parameter] public Action<TaskModel> Drop { get; set; }
+
+    public string canDragClass { get; set; }
+
+    void OnDrop()
+    {
+        if (Drop != null && DragAndDropService.Accepts(Zone))
+        {
+            Drop((TaskModel)DragAndDropService.Data);
+        }
+        canDragClass = string.Empty;
+    }
+
+    private void HandleDragEnter()
+    {
+        canDragClass = DragAndDropService.Accepts(Zone) ? "allow-drop" : "restrict-drop";
+    }
+
+    private void HandleDragLeave()
+    {
+        canDragClass = string.Empty;
+    }
+}

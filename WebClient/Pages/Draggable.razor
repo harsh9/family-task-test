@@ -1,0 +1,20 @@
+﻿@using WebClient.Services;
+@inject DragAndDropService DragAndDropService
+
+<div draggable="true" @ondragstart="@OnDragStart">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public MenuItem Zone { get; set; }
+
+    [Parameter] public TaskModel Data { get; set; }
+
+    public void OnDragStart()
+    {
+        // Notify the DragAndDropService what the current Data and Zone are.
+        DragAndDropService.StartDrag(Data);
+    }
+}
