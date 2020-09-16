@@ -34,7 +34,7 @@
             var allTaskresults = (await TaskDataService.GetAllTasks()).TasksList.ToList();
 
             LoadTasks(result, allTaskresults);
-            
+
             leftMenuItem.Add(new MenuItem
             {
                 Label = "All Tasks",
@@ -174,7 +174,5 @@
                 StateHasChanged();
             }
         }
-        }
     }
-}
 }
