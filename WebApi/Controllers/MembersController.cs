@@ -13,32 +13,32 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MembersController : ControllerBase
+    public class TasksController : ControllerBase
     {
-        private readonly IMemberService _memberService;
+        private readonly ITaskService _taskService;
 
-        public MembersController(IMemberService memberService)
+        public TasksController(ITaskService taskService)
         {
-            _memberService = memberService;
+            _taskService = taskService;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(CreateMemberCommandResult), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Create(CreateMemberCommand command)
+        [ProducesResponseType(typeof(CreateTaskCommandResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Create(CreateTaskCommand command)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await _memberService.CreateMemberCommandHandler(command);
+            var result = await _taskService.CreateTaskCommandHandler(command);
 
-            return Created($"/api/members/{result.Payload.Id}", result);
+            return Created($"/api/tasks/{result.TasksList.Id}", result);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(UpdateMemberCommandResult), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Update(Guid id, UpdateMemberCommand command)
+        [ProducesResponseType(typeof(UpdateTaskCommandResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update(Guid id, UpdateTaskCommand command)
         {
             if (!ModelState.IsValid)
             {
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
 
             try
             {
-                var result = await _memberService.UpdateMemberCommandHandler(command);
+                var result = await _taskService.UpdateTaskCommandHandler(command);
 
                 return Ok(result);
             }
@@ -58,10 +58,10 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(GetAllMembersQueryResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetAllTasksQueryResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {            
-            var result = await _memberService.GetAllMembersQueryHandler();
+            var result = await _taskService.GetAllTasksQueryHandler();
 
             return Ok(result);
         }

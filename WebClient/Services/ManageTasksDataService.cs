@@ -7,9 +7,7 @@ using WebClient.Abstractions;
 
 namespace WebClient.Services
 {
-    // Need to change model and Command after creating it change here
-
-    public class ManageTasksDataService : IMemberDataService
+    public class ManageTasksDataService : ITaskDataService
     {
         private HttpClient _httpClient;
         public ManageTasksDataService(HttpClient httpClient)
@@ -17,19 +15,19 @@ namespace WebClient.Services
             _httpClient = httpClient;
         }
 
-        public async Task<CreateMemberCommandResult> Create(CreateMemberCommand command)
+        public async Task<CreateTaskCommandResult> Create(CreateTaskCommand command)
         {            
-            return await _httpClient.PostJsonAsync<CreateMemberCommandResult>("members", command);
+            return await _httpClient.PostJsonAsync<CreateTaskCommandResult>("tasks", command);
         }
 
-        public async Task<GetAllMembersQueryResult> GetAllMembers()
+        public async Task<GetAllTasksQueryResult> GetAllTasks()
         {
-            return await _httpClient.GetJsonAsync<GetAllMembersQueryResult>("members");
+            return await _httpClient.GetJsonAsync<GetAllTasksQueryResult>("tasks");
         }
 
-        public async Task<UpdateMemberCommandResult> Update(UpdateMemberCommand command)
+        public async Task<UpdateTaskCommandResult> Update(UpdateTaskCommand command)
         {
-            return await _httpClient.PutJsonAsync<UpdateMemberCommandResult>($"members/{command.Id}", command);
+            return await _httpClient.PutJsonAsync<UpdateTaskCommandResult>($"tasks/{command.Id}", command);
         }
     }
 }
