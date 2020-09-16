@@ -53,23 +53,23 @@
         <div class="row m-0 col-12 p-0">
             <Field class="col-6 custom-input">
                 <FieldLabel>First Name</FieldLabel>
-                <TextEdit @bind-Text="@member.firstname"/>
+                <TextEdit @bind-Text="@member.Firstname"/>
             </Field>
             <Field class="col-6 custom-input">
                 <FieldLabel>Last Name</FieldLabel>
-                <TextEdit @bind-Text="@member.lastname"/>
+                <TextEdit @bind-Text="@member.Lastname"/>
             </Field>
         </div>
         <div class="row m-0 col-12 p-0">
             <Field class="col-12 custom-input">
                 <FieldLabel>Email Address</FieldLabel>
-                <TextEdit @bind-Text="@member.email"/>
+                <TextEdit @bind-Text="@member.Email"/>
             </Field>
         </div>
         <div class="row m-0 col-12 p-0">
             <Field class="col-12 custom-input">
                 <FieldLabel>Roles</FieldLabel>
-                <TextEdit @bind-Text="@member.role"/>
+                <TextEdit @bind-Text="@member.Role"/>
             </Field>
         </div>
         <div class="row m-0 col-12 p-0">
@@ -98,7 +98,7 @@
     private string[] avtars = new string[] {"#FE4E4E", "#FEB84E", "#FEEC4E", "#3EC732", "#4EFEF3", "#4E7FFE", "#E54EFE", "#C17216"};
 
     private void onAvatarSelect(string item) {
-        member.avtar = item;
+        member.Avatar = item;
     }
 
     private async void onAddClick() {        

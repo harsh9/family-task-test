@@ -43,13 +43,13 @@
     {
         <div class="task-item p-3 my-3 row m-0">
             <div class="col-10 p-0">
-                <Check TValue="bool" Checked="@item.isDone" CheckedChanged="@(val => item.isDone = val)">
-                    <span class="@(item.isDone ? "done-text" : "")">@item.text</span>
+                <Check TValue="bool" Checked="@item.IsDone" CheckedChanged="@(val => item.IsDone = val)">
+                    <span class="@(item.IsDone ? "done-text" : "")">@item.Text</span>
                 </Check>
             </div>
             <div class="col-2 p-0 d-flex justify-content-end align-items-center">
-                @if (item.member != null) {
-                    <div class="avtar mr-1" style="background-color: @item.member.avtar;"></div>
+                @if (item.Member != null) {
+                    <div class="avtar mr-1" style="background-color: @item.Member.Avatar;"></div>
                 }
                 <img class="delete-icon" src="/assets/images/delete-icon.svg"/>
             </div>

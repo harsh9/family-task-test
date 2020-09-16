@@ -2,10 +2,10 @@ using System;
 
 public class FamilyMember
 {
-    public Guid id {get; set;}
-    public string firstname { get; set; }
-    public string lastname { get; set; }
-    public string email { get; set; }
-    public string role { get; set; }
-    public string avtar { get; set; }
+    public Guid Id {get; set;}
+    public string Firstname { get; set; }
+    public string Lastname { get; set; }
+    public string Email { get; set; }
+    public string Role { get; set; }
+    public string Avatar { get; set; }
 }

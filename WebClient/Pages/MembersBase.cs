@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using WebClient.Abstractions;
 
@@ -30,12 +28,12 @@ namespace WebClient.Pages
                 {                    
                     members.Add(new FamilyMember()
                     {
-                        avtar = item.Avatar,
-                        email = item.Email,
-                        firstname = item.FirstName,
-                        lastname = item.LastName,
-                        role = item.Roles,
-                        id = item.Id
+                        Avatar = item.Avatar,
+                        Email = item.Email,
+                        Firstname = item.FirstName,
+                        Lastname = item.LastName,
+                        Role = item.Roles,
+                        Id = item.Id
                     });
                 }
             }
@@ -44,9 +42,9 @@ namespace WebClient.Pages
             {
                 leftMenuItem.Add(new MenuItem
                 {
-                    iconColor = members[i].avtar,
-                    label = members[i].firstname,
-                    referenceId = members[i].id
+                    IconColor = members[i].Avatar,
+                    Label = members[i].Firstname,
+                    ReferenceId = members[i].Id
                 });
             }
             showCreator = true;
@@ -63,30 +61,30 @@ namespace WebClient.Pages
         {
            var result = await  MemberDataService.Create(new Domain.Commands.CreateMemberCommand()
             {
-                Avatar = familyMember.avtar,
-                FirstName = familyMember.firstname,
-                LastName = familyMember.lastname,
-                Email = familyMember.email,
-                Roles = familyMember.role
+                Avatar = familyMember.Avatar,
+                FirstName = familyMember.Firstname,
+                LastName = familyMember.Lastname,
+                Email = familyMember.Email,
+                Roles = familyMember.Role
             });
 
             if (result != null && result.Payload != null && result.Payload.Id != Guid.Empty)
             {
                 members.Add(new FamilyMember()
                 {
-                    avtar = result.Payload.Avatar,
-                    email = result.Payload.Email,
-                    firstname = result.Payload.FirstName,
-                    lastname = result.Payload.LastName,
-                    role = result.Payload.Roles,
-                    id = result.Payload.Id
+                    Avatar = result.Payload.Avatar,
+                    Email = result.Payload.Email,
+                    Firstname = result.Payload.FirstName,
+                    Lastname = result.Payload.LastName,
+                    Role = result.Payload.Roles,
+                    Id = result.Payload.Id
                 });
 
                 leftMenuItem.Add(new MenuItem
                 {
-                    iconColor = result.Payload.Avatar,
-                    label = result.Payload.FirstName,
-                    referenceId = result.Payload.Id
+                    IconColor = result.Payload.Avatar,
+                    Label = result.Payload.FirstName,
+                    ReferenceId = result.Payload.Id
                 });
 
 

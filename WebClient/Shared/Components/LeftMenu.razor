@@ -65,11 +65,11 @@
 <div class="menu-wrapper col-12 p-0">
     @if(MenuItems != null && MenuItems.Length > 0) {
         @foreach (var item in MenuItems) {
-            <div class="menu-item col-10 offset-1 p-3 my-4 p-sm-2 @(item.isActive ? "active" : "")" @onclick="@(e => item.InvokClickCallback(item))">
-                @if(item.iconColor != null) {
-                    <div class="avtar mr-3" style="background-color: @(item.iconColor);"> </div>
+            <div class="menu-item col-10 offset-1 p-3 my-4 p-sm-2 @(item.IsActive ? "active" : "")" @onclick="@(e => item.InvokClickCallback(item))">
+                @if(item.IconColor != null) {
+                    <div class="avtar mr-3" style="background-color: @(item.IconColor);"> </div>
                 }
-                <div class="label"> @item.label </div>
+                <div class="label"> @item.Label </div>
             </div>
         }
     }
