@@ -11,6 +11,7 @@ namespace WebApi.AutoMapper
         {
             CreateMap<CreateTaskCommand, Task>();
             CreateMap<UpdateTaskCommand, Task>();
+            CreateMap<DeleteTaskCommand, Task>();
             CreateMap<Task, TaskVm>();
         }
     }

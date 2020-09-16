@@ -8,6 +8,7 @@ namespace WebClient.Abstractions
     {
         public Task<CreateTaskCommandResult> Create(CreateTaskCommand command);
         public Task<UpdateTaskCommandResult> Update(UpdateTaskCommand command);
+        public Task<DeleteTaskCommandResult> Delete(DeleteTaskCommand command);
         public Task<GetAllTasksQueryResult> GetAllTasks();
     }
 }

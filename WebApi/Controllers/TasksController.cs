@@ -57,6 +57,25 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(DeleteTaskCommandResult), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Delete(Guid id, DeleteTaskCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _taskService.DeleteTaskCommandHandler(command);
+                return Ok(result);
+            }
+            catch (NotFoundException<Guid>)
+            {
+                return NotFound();
+            }
+        }
+
         [HttpGet]
         [ProducesResponseType(typeof(GetAllTasksQueryResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()

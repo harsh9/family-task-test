@@ -8,6 +8,7 @@ namespace Core.Abstractions.Services
     {
         Task<CreateTaskCommandResult> CreateTaskCommandHandler(CreateTaskCommand command);
         Task<UpdateTaskCommandResult> UpdateTaskCommandHandler(UpdateTaskCommand command);
+        Task<DeleteTaskCommandResult> DeleteTaskCommandHandler(DeleteTaskCommand command);
         Task<GetAllTasksQueryResult> GetAllTasksQueryHandler();
     }
 }

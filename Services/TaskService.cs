@@ -54,6 +54,20 @@ namespace Services
             };
         }
 
+        public async Task<DeleteTaskCommandResult> DeleteTaskCommandHandler(DeleteTaskCommand command)
+        {
+            var isSucceed = true;            
+            var affectedRecordsCount = await _taskRepository.DeleteRecordAsync(command.Id);
+
+            if (affectedRecordsCount < 1)
+                isSucceed = false;
+
+            return new DeleteTaskCommandResult()
+            {
+                Succeed = isSucceed
+            };
+        }
+
         public async Task<GetAllTasksQueryResult> GetAllTasksQueryHandler()
         {
             IEnumerable<TaskVm> vm = new List<TaskVm>();
