@@ -18,6 +18,7 @@
         protected bool isLoaded;
         protected bool showLister;
         protected bool showCreator;
+        protected Guid? memberId;
 
         [Inject]
         public IMemberDataService MemberDataService { get; set; }
@@ -100,6 +101,7 @@
         private void onItemClick(object sender, object e)
         {
             Guid val = (Guid)e.GetType().GetProperty("ReferenceId").GetValue(e);
+            memberId = val;
             makeMenuItemActive(e);
             if (allTasks != null && allTasks.Length > 0)
             {
@@ -124,6 +126,7 @@
             tasksToShow = allTasks;
             showLister = true;
             showCreator = false;
+            memberId = null;
             makeMenuItemActive(e);
             StateHasChanged();
         }
@@ -170,6 +173,23 @@
                     ReferenceId = result.Payload.Id
                 });
 
+                showCreator = false;
+                StateHasChanged();
+            }
+        }
+
+        public async Task onTaskAdd(TaskModel task)
+        {
+            var result = await TaskDataService.Create(new Domain.Commands.CreateTaskCommand()
+            {
+                Subject = task.Text,
+                AssignedToId = memberId,
+                IsComplete = task.IsDone
+            });
+
+            if (result != null && result.TasksList != null && result.TasksList.Id != Guid.Empty)
+            {
+                allTasks.ToList().Add(task);
                 showCreator = false;
                 StateHasChanged();
             }
