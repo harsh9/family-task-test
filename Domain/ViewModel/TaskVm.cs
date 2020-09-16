@@ -6,7 +6,7 @@ namespace Domain.ViewModel
     {
         public Guid Id { get; set; }
         public string Subject { get; set; }
-        public string IsComplete { get; set; }
-        public string AssignedToId { get; set; }
+        public bool IsComplete { get; set; }
+        public Guid? AssignedToId { get; set; }
     }
 }

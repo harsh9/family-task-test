@@ -34,6 +34,7 @@ namespace WebClient
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services.AddHttpClient<IMemberDataService, MemberDataService>(client => client.BaseAddress = new Uri("https://localhost:5001/api/"));
+            builder.Services.AddHttpClient<ITaskDataService, ManageTasksDataService>(client => client.BaseAddress = new Uri("https://localhost:5001/api/"));
 
             var host = builder.Build();
 

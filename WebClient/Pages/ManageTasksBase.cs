@@ -1,5 +1,6 @@
 ﻿namespace WebClient.Pages
 {
+    using Domain.ViewModel;
     using Microsoft.AspNetCore.Components;
     using System;
     using System.Collections.Generic;
@@ -23,13 +24,18 @@
         public IMemberDataService MemberDataService { get; set; }
 
         [Inject]
+        public ITaskDataService TaskDataService { get; set; }
+
+        [Inject]
         public HttpClient Http { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             var result = (await MemberDataService.GetAllMembers()).Payload.ToList();
-            allTasks = await Http.GetFromJsonAsync<TaskModel[]>("sample-data/tasks.json");
+            var allTaskresults = (await TaskDataService.GetAllTasks()).TasksList.ToList();
 
+            LoadTasks(result, allTaskresults);
+            
             leftMenuItem.Add(new MenuItem
             {
                 Label = "All Tasks",
@@ -50,6 +56,38 @@
             }
             showAllTasks(null, leftMenuItem[0]);
             isLoaded = true;
+        }
+
+        private void LoadTasks(List<MemberVm> result, List<TaskVm> allTaskresults)
+        {
+            List<TaskModel> list = new List<TaskModel>();
+
+            for (int i = 0; i < allTaskresults.Count; i++)
+            {
+                var member = new FamilyMember();
+                for (int j = 0; j < result.Count; j++)
+                {
+                    if (result[j].Id == allTaskresults[i].AssignedToId)
+                    {
+                        member.Id = result[j].Id;
+                        member.Firstname = result[j].FirstName;
+                        member.Lastname = result[j].LastName;
+                        member.Email = result[j].Email;
+                        member.Role = result[j].Roles;
+                        member.Avatar = result[j].Avatar;
+                    }
+                }
+                var task = new TaskModel
+                {
+                    Id = allTaskresults[i].Id,
+                    Text = allTaskresults[i].Subject,
+                    IsDone = allTaskresults[i].IsComplete,
+                    Member = member
+                };
+                list.Add(task);
+            }
+
+            allTasks = list.ToArray();
         }
 
         protected void OnAddItem()
@@ -137,5 +175,7 @@
                 StateHasChanged();
             }
         }
+        }
     }
+}
 }
