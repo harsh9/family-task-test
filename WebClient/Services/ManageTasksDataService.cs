@@ -15,7 +15,7 @@ namespace WebClient.Services
             _httpClient = httpClient;
         }
         public async Task<CreateTaskCommandResult> Create(CreateTaskCommand command)
-        {            
+        {
             return await _httpClient.PostJsonAsync<CreateTaskCommandResult>("tasks", command);
         }
 
@@ -31,7 +31,8 @@ namespace WebClient.Services
 
         public async Task<DeleteTaskCommandResult> Delete(DeleteTaskCommand command)
         {
-            return await _httpClient.PutJsonAsync<DeleteTaskCommandResult>($"tasks/{command.Id}", command);
+            await _httpClient.DeleteAsync($"tasks/{command.Id}");
+            return null;
         }
     }
 }

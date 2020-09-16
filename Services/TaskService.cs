@@ -36,28 +36,29 @@ namespace Services
                 TasksList = vm
             };
         }
-        
+
         public async Task<UpdateTaskCommandResult> UpdateTaskCommandHandler(UpdateTaskCommand command)
         {
             var isSucceed = true;
             var task = await _taskRepository.ByIdAsync(command.Id);
 
             _mapper.Map<UpdateTaskCommand, Domain.DataModels.Task>(command, task);
-            
+
             var affectedRecordsCount = await _taskRepository.UpdateRecordAsync(task);
 
             if (affectedRecordsCount < 1)
                 isSucceed = false;
 
-            return new UpdateTaskCommandResult() { 
-               Succeed = isSucceed
+            return new UpdateTaskCommandResult()
+            {
+                Succeed = isSucceed
             };
         }
 
-        public async Task<DeleteTaskCommandResult> DeleteTaskCommandHandler(DeleteTaskCommand command)
+        public async Task<DeleteTaskCommandResult> DeleteTaskCommandHandler(Guid id)
         {
-            var isSucceed = true;            
-            var affectedRecordsCount = await _taskRepository.DeleteRecordAsync(command.Id);
+            var isSucceed = true;
+            var affectedRecordsCount = await _taskRepository.DeleteRecordAsync(id);
 
             if (affectedRecordsCount < 1)
                 isSucceed = false;
@@ -77,7 +78,8 @@ namespace Services
             if (tasks != null && tasks.Any())
                 vm = _mapper.Map<IEnumerable<TaskVm>>(tasks);
 
-            return new GetAllTasksQueryResult() { 
+            return new GetAllTasksQueryResult()
+            {
                 TasksList = vm
             };
         }

@@ -1,5 +1,6 @@
-
+@using Domain.Commands;
 @namespace FamilyTask.Shared.Components
+@inject WebClient.Abstractions.ITaskDataService TaskDataService
 
 @using WebClient.Pages;
 
@@ -108,8 +109,16 @@
 
     [Parameter] public EventCallback OnAddItem { get; set; }
 
-    void OnDrop(TaskModel data)
+    async void OnDrop(TaskModel data, MenuItem menuItem)
     {
+        UpdateTaskCommand command = new UpdateTaskCommand
+        {
+            Id = data.Id,
+            Subject = data.Text,
+            IsComplete = data.IsDone,
+            AssignedToId = menuItem.ReferenceId != Guid.Empty ? menuItem.ReferenceId.ToString() : null
+        };
+        await TaskDataService.Update(command);
         StateHasChanged();
     }
 }

@@ -14,7 +14,7 @@
 
     [Parameter] public MenuItem Zone { get; set; }
 
-    [Parameter] public Action<TaskModel> Drop { get; set; }
+    [Parameter] public Action<TaskModel, MenuItem> Drop { get; set; }
 
     public string canDragClass { get; set; }
 
@@ -22,7 +22,7 @@
     {
         if (Drop != null && DragAndDropService.Accepts(Zone))
         {
-            Drop((TaskModel)DragAndDropService.Data);
+            Drop((TaskModel)DragAndDropService.Data, Zone);
         }
         canDragClass = string.Empty;
     }

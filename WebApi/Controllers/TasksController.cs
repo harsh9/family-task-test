@@ -57,9 +57,9 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(DeleteTaskCommandResult), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Delete(Guid id, DeleteTaskCommand command)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace WebApi.Controllers
             }
             try
             {
-                var result = await _taskService.DeleteTaskCommandHandler(command);
+                var result = await _taskService.DeleteTaskCommandHandler(id);
                 return Ok(result);
             }
             catch (NotFoundException<Guid>)

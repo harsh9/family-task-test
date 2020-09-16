@@ -1,5 +1,6 @@
 ﻿using Domain.Commands;
 using Domain.Queries;
+using System;
 using System.Threading.Tasks;
 
 namespace Core.Abstractions.Services
@@ -8,7 +9,7 @@ namespace Core.Abstractions.Services
     {
         Task<CreateTaskCommandResult> CreateTaskCommandHandler(CreateTaskCommand command);
         Task<UpdateTaskCommandResult> UpdateTaskCommandHandler(UpdateTaskCommand command);
-        Task<DeleteTaskCommandResult> DeleteTaskCommandHandler(DeleteTaskCommand command);
+        Task<DeleteTaskCommandResult> DeleteTaskCommandHandler(Guid id);
         Task<GetAllTasksQueryResult> GetAllTasksQueryHandler();
     }
 }
