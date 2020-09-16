@@ -1,81 +1,122 @@
-@namespace FamilyTask.Components
 @using Domain.Commands;
-@using WebClient.Pages;
+@namespace FamilyTask.Shared.Components
 @inject WebClient.Abstractions.ITaskDataService TaskDataService
+
+@using WebClient.Pages;
+
 <style>
-    .task-wrapper .task-item {
-        background: #FFFFFF;
-        border: 1px solid #C5C9C9;
-        box-sizing: border-box;
-        border-radius: 8px;
+    .menu-wrapper {
+        background: #FBFBFB;
+        box-shadow: 2px 0px 4px 2px rgba(0, 0, 0, 0.12);
+        overflow-y: auto;
+        height: 100%;
+    }
+
+        .menu-wrapper .menu-item {
+            background: #FFFFFF;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.12);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border: 3px solid #FFFFFF;
+        }
+
+            .menu-wrapper .menu-item.active {
+                border: 3px solid #CC1778;
+            }
+
+        .menu-wrapper .add-menu-item {
+            border: 1px dashed #000000;
+            box-sizing: border-box;
+            filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.12));
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    .add-menu-item .fa {
+        font-size: 12px;
+    }
+
+    .restrict-drop > div {
+        border: 2px dashed red !important;
+    }
+
+    .allow-drop > div {
+        border: 2px dashed green !important;
+    }
+
+    .menu-wrapper .label {
+        color: #000000;
+        font-family: "Poppins Regular";
         font-size: 24px;
-        font-family: "Poppins Light";
+        line-height: 36px;
     }
 
-    .done-text {
-        text-decoration: line-through;
-    }
-
-    .task-wrapper .avtar {
+    .menu-wrapper .avtar {
         width: 32px;
         height: 32px;
         border-radius: 50%;
     }
 
     @@media(max-width: 1400px) {
-        .task-wrapper .task-item {
+        .menu-wrapper .label {
             font-size: 16px;
+            line-height: 24px;
         }
 
-        .task-wrapper .avtar {
+        .menu-wrapper .avtar {
             width: 24px;
             height: 24px;
-        }
-
-        .delete-icon {
-            width: 25px;
         }
     }
 
     @@media(max-width: 767.98px) {
-        .task-wrapper .avtar {
+        .menu-wrapper .avtar {
             width: 16px;
             height: 16px;
         }
     }
 </style>
-<div class="task-wrapper">
-    @foreach (var item in Tasks)
+
+<div class="menu-wrapper col-12 p-0">
+    @if (MenuItems != null && MenuItems.Length > 0)
     {
-        <Draggable Data="@item">
-            <div class="task-item p-3 my-3 row m-0">
-                <div class="col-10 p-0">
-                    <Check TValue="bool" Checked="@item.IsDone" CheckedChanged="@(val => onTaskSelection(item, val))">
-                        <span class="@(item.IsDone ? "done-text" : "")">@item.Text</span>
-                    </Check>
-                </div>
-                <div class="col-2 p-0 d-flex justify-content-end align-items-center">
-                    @if (item.Member != null)
+        @foreach (var item in MenuItems)
+        {
+            <DropTarget Drop="@OnDrop" Zone="@item">
+                <div class="menu-item col-10 offset-1 p-3 my-4 p-sm-2 @(item.IsActive ? "active" : "")" @onclick="@(e => item.InvokClickCallback(item))">
+                    @if (item.IconColor != null)
                     {
-                        <div class="avtar mr-1" style="background-color: @item.Member.Avatar;"></div>
+                        <div class="avtar mr-3" style="background-color: @(item.IconColor);"> </div>
                     }
-                    <img class="delete-icon" src="/assets/images/delete-icon.svg" />
+                    <div class="label"> @item.Label </div>
                 </div>
-            </div>
-        </Draggable>
+            </DropTarget>
+        }
     }
+
+    <div class="add-menu-item label col-10 offset-1 p-3 my-4 p-sm-2" @onclick="@OnAddItem">
+        <span class="fa fa-plus"></span> &nbsp; Add Member
+    </div>
 </div>
-@code  {
-    [Parameter] public TaskModel[] Tasks { get; set; }
-    private async void onTaskSelection(TaskModel item, bool isSelected)
+
+@code {
+    [Parameter] public MenuItem[] MenuItems { get; set; }
+
+    [Parameter] public EventCallback OnAddItem { get; set; }
+
+    async void OnDrop(TaskModel data, MenuItem menuItem)
     {
-        item.IsDone = isSelected;
         UpdateTaskCommand command = new UpdateTaskCommand
         {
-            Id = item.Id,
-            Subject = item.Text,
-            IsComplete = item.IsDone,
-            AssignedToId = (item.Member.Id != null) ? item.Member.Id.ToString() : null
+            Id = data.Id,
+            Subject = data.Text,
+            IsComplete = data.IsDone,
+            AssignedToId = menuItem.ReferenceId != Guid.Empty ? menuItem.ReferenceId.ToString() : null
         };
         await TaskDataService.Update(command);
         StateHasChanged();
