@@ -50,8 +50,8 @@
         <Draggable Data="@item">
             <div class="task-item p-3 my-3 row m-0">
                 <div class="col-10 p-0">
-                    <Check TValue="bool" Checked="@item.IsDone" CheckedChanged="@(val => onTaskSelection(item, val))">
-                        <span class="@(item.IsDone ? "done-text" : "")">@item.Text</span>
+                    <Check TValue="bool" Checked="@item.IsComplete" CheckedChanged="@(val => onTaskSelection(item, val))">
+                        <span class="@(item.IsComplete ? "done-text" : "")">@item.Subject</span>
                     </Check>
                 </div>
                 <div class="col-2 p-0 d-flex justify-content-end align-items-center">
@@ -69,18 +69,18 @@
     [Parameter] public TaskModel[] Tasks { get; set; }
     private async void onTaskSelection(TaskModel item, bool isSelected)
     {
-        item.IsDone = isSelected;
+        item.IsComplete = isSelected;
         UpdateTaskCommand command = new UpdateTaskCommand
         {
             Id = item.Id,
-            Subject = item.Text,
-            IsComplete = item.IsDone,
+            Subject = item.Subject,
+            IsComplete = item.IsComplete,
             AssignedToId = (item.Member.Id != Guid.Empty) ? item.Member.Id.ToString() : null
         };
         var result = await TaskDataService.Update(command);
         if (!result.Succeed)
         {
-            item.IsDone = !item.IsDone;
+            item.IsComplete = !item.IsComplete;
         }
         StateHasChanged();
     }

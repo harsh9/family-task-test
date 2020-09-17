@@ -112,8 +112,8 @@
         UpdateTaskCommand command = new UpdateTaskCommand
         {
             Id = data.Id,
-            Subject = data.Text,
-            IsComplete = data.IsDone,
+            Subject = data.Subject,
+            IsComplete = data.IsComplete,
             AssignedToId = menuItem.ReferenceId != Guid.Empty ? menuItem.ReferenceId.ToString() : null
         };
         var result = await TaskDataService.Update(command);

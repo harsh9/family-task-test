@@ -93,8 +93,8 @@
                 var task = new TaskModel
                 {
                     Id = allTaskResults[i].Id,
-                    Text = allTaskResults[i].Subject,
-                    IsDone = allTaskResults[i].IsComplete,
+                    Subject = allTaskResults[i].Subject,
+                    IsComplete = allTaskResults[i].IsComplete,
                     Member = member
                 };
                 list.Add(task);
@@ -195,9 +195,9 @@
         {
             var result = await TaskDataService.Create(new Domain.Commands.CreateTaskCommand()
             {
-                Subject = task.Text,
+                Subject = task.Subject,
                 AssignedToId = memberId,
-                IsComplete = task.IsDone
+                IsComplete = task.IsComplete
             });
 
             if (result != null && result.TasksList != null && result.TasksList.Id != Guid.Empty)
@@ -206,8 +206,8 @@
                 var taskModel = new TaskModel
                 {
                     Id = result.TasksList.Id,
-                    Text = result.TasksList.Subject,
-                    IsDone = result.TasksList.IsComplete,
+                    Subject = result.TasksList.Subject,
+                    IsComplete = result.TasksList.IsComplete,
                     Member = familyMember
                 };
 
@@ -232,7 +232,7 @@
                     }).ToArray();
                 }
                 showCreator = false;
-                task.Text = string.Empty;
+                task.Subject = string.Empty;
                 StateHasChanged();
             }
         }
