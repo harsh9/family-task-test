@@ -106,9 +106,7 @@
 
 @code {
     [Parameter] public MenuItem[] MenuItems { get; set; }
-
     [Parameter] public EventCallback OnAddItem { get; set; }
-
     async void OnDrop(TaskModel data, MenuItem menuItem)
     {
         UpdateTaskCommand command = new UpdateTaskCommand
@@ -118,7 +116,23 @@
             IsComplete = data.IsDone,
             AssignedToId = menuItem.ReferenceId != Guid.Empty ? menuItem.ReferenceId.ToString() : null
         };
-        await TaskDataService.Update(command);
+        var result = await TaskDataService.Update(command);
+        if (result.Succeed)
+        {
+            if (menuItem.ReferenceId != Guid.Empty)
+            {
+                data.Member = new FamilyMember
+                {
+                    Avatar = menuItem.IconColor,
+                    Id = menuItem.ReferenceId
+                };
+            }
+            else
+            {
+                data.Member = new FamilyMember();
+            }
+        }
+        menuItem.InvokClickCallback(menuItem);
         StateHasChanged();
     }
 }

@@ -36,7 +36,7 @@ namespace WebApi.Controllers
             return Created($"/api/tasks/{result.TasksList.Id}", result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         [ProducesResponseType(typeof(UpdateTaskCommandResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(Guid id, UpdateTaskCommand command)
         {

@@ -11,26 +11,32 @@
         font-size: 24px;
         font-family: "Poppins Light";
     }
+
     .done-text {
         text-decoration: line-through;
     }
+
     .task-wrapper .avtar {
         width: 32px;
         height: 32px;
         border-radius: 50%;
     }
+
     @@media(max-width: 1400px) {
         .task-wrapper .task-item {
             font-size: 16px;
         }
+
         .task-wrapper .avtar {
             width: 24px;
             height: 24px;
         }
+
         .delete-icon {
             width: 25px;
         }
     }
+
     @@media(max-width: 767.98px) {
         .task-wrapper .avtar {
             width: 16px;
@@ -69,9 +75,13 @@
             Id = item.Id,
             Subject = item.Text,
             IsComplete = item.IsDone,
-            AssignedToId = (item.Member.Id != null) ? item.Member.Id.ToString() : null
+            AssignedToId = (item.Member.Id != Guid.Empty) ? item.Member.Id.ToString() : null
         };
-        await TaskDataService.Update(command);
+        var result = await TaskDataService.Update(command);
+        if (!result.Succeed)
+        {
+            item.IsDone = !item.IsDone;
+        }
         StateHasChanged();
     }
 }

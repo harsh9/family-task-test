@@ -26,7 +26,7 @@ namespace WebClient.Services
 
         public async Task<UpdateTaskCommandResult> Update(UpdateTaskCommand command)
         {
-            return await _httpClient.PutJsonAsync<UpdateTaskCommandResult>($"tasks/{command.Id}", command);
+            return await _httpClient.PostJsonAsync<UpdateTaskCommandResult>($"tasks/{command.Id}", command);
         }
 
         public async Task<DeleteTaskCommandResult> Delete(DeleteTaskCommand command)
