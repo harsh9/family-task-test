@@ -58,8 +58,26 @@
             isLoaded = true;
         }
 
+        /// <summary>
+        /// Loads the tasks.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="allTaskResults">All task results.</param>
         private void LoadTasks(List<MemberVm> result, List<TaskVm> allTaskResults)
         {
+            for (int m = 0; m < result.Count; m++)
+            {
+                members.Add(new FamilyMember
+                {
+                    Avatar = result[m].Avatar,
+                    Email = result[m].Email,
+                    Firstname = result[m].FirstName,
+                    Lastname = result[m].LastName,
+                    Role = result[m].Roles,
+                    Id = result[m].Id
+                });
+
+            }
             List<TaskModel> list = new List<TaskModel>();
 
             for (int i = 0; i < allTaskResults.Count; i++)
@@ -69,12 +87,7 @@
                 {
                     if (result[j].Id == allTaskResults[i].AssignedToId)
                     {
-                        member.Id = result[j].Id;
-                        member.Firstname = result[j].FirstName;
-                        member.Lastname = result[j].LastName;
-                        member.Email = result[j].Email;
-                        member.Role = result[j].Roles;
-                        member.Avatar = result[j].Avatar;
+                        member = members.First(x => x.Id == allTaskResults[i].AssignedToId);
                     }
                 }
                 var task = new TaskModel
@@ -219,6 +232,7 @@
                     }).ToArray();
                 }
                 showCreator = false;
+                task.Text = string.Empty;
                 StateHasChanged();
             }
         }
