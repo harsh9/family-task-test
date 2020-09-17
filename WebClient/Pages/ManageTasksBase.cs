@@ -32,9 +32,9 @@
         protected override async Task OnInitializedAsync()
         {
             var result = (await MemberDataService.GetAllMembers()).Payload.ToList();
-            var allTaskresults = (await TaskDataService.GetAllTasks()).TasksList.ToList();
+            var allTaskResults = (await TaskDataService.GetAllTasks()).TasksList.ToList();
 
-            LoadTasks(result, allTaskresults);
+            LoadTasks(result, allTaskResults);
 
             leftMenuItem.Add(new MenuItem
             {
@@ -58,16 +58,16 @@
             isLoaded = true;
         }
 
-        private void LoadTasks(List<MemberVm> result, List<TaskVm> allTaskresults)
+        private void LoadTasks(List<MemberVm> result, List<TaskVm> allTaskResults)
         {
             List<TaskModel> list = new List<TaskModel>();
 
-            for (int i = 0; i < allTaskresults.Count; i++)
+            for (int i = 0; i < allTaskResults.Count; i++)
             {
                 var member = new FamilyMember();
                 for (int j = 0; j < result.Count; j++)
                 {
-                    if (result[j].Id == allTaskresults[i].AssignedToId)
+                    if (result[j].Id == allTaskResults[i].AssignedToId)
                     {
                         member.Id = result[j].Id;
                         member.Firstname = result[j].FirstName;
@@ -79,9 +79,9 @@
                 }
                 var task = new TaskModel
                 {
-                    Id = allTaskresults[i].Id,
-                    Text = allTaskresults[i].Subject,
-                    IsDone = allTaskresults[i].IsComplete,
+                    Id = allTaskResults[i].Id,
+                    Text = allTaskResults[i].Subject,
+                    IsDone = allTaskResults[i].IsComplete,
                     Member = member
                 };
                 list.Add(task);
@@ -189,7 +189,35 @@
 
             if (result != null && result.TasksList != null && result.TasksList.Id != Guid.Empty)
             {
-                allTasks.ToList().Add(task);
+                var familyMember = memberId == null ? null : members.First(x => x.Id == memberId);
+                var taskModel = new TaskModel
+                {
+                    Id = result.TasksList.Id,
+                    Text = result.TasksList.Subject,
+                    IsDone = result.TasksList.IsComplete,
+                    Member = familyMember
+                };
+
+                allTasks = allTasks.Prepend(taskModel).ToArray();
+
+                if (memberId == null)
+                {
+                    showAllTasks(null, leftMenuItem[0]);
+                }
+                else
+                {
+                    tasksToShow = allTasks.Where(item =>
+                    {
+                        if (item.Member != null)
+                        {
+                            return item.Member.Id == memberId;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }).ToArray();
+                }
                 showCreator = false;
                 StateHasChanged();
             }
