@@ -114,7 +114,8 @@
             Id = data.Id,
             Subject = data.Subject,
             IsComplete = data.IsComplete,
-            AssignedToId = menuItem.ReferenceId != Guid.Empty ? menuItem.ReferenceId.ToString() : null
+            AssignedToId = menuItem.ReferenceId != Guid.Empty ? menuItem.ReferenceId.ToString() : null,
+            LastChangedOn = DateTime.Now
         };
         var result = await TaskDataService.Update(command);
         if (result.Succeed)

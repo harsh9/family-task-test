@@ -75,7 +75,8 @@
             Id = item.Id,
             Subject = item.Subject,
             IsComplete = item.IsComplete,
-            AssignedToId = (item.Member.Id != Guid.Empty) ? item.Member.Id.ToString() : null
+            AssignedToId = (item.Member.Id != Guid.Empty) ? item.Member.Id.ToString() : null,
+            LastChangedOn = DateTime.Now
         };
         var result = await TaskDataService.Update(command);
         if (!result.Succeed)

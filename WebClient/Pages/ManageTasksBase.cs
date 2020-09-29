@@ -95,12 +95,12 @@
                     Id = allTaskResults[i].Id,
                     Subject = allTaskResults[i].Subject,
                     IsComplete = allTaskResults[i].IsComplete,
+                    LastChangedOn = allTaskResults[i].LastChangedOn,
                     Member = member
                 };
                 list.Add(task);
             }
-
-            allTasks = list.ToArray();
+            allTasks = list.OrderByDescending(x => x.LastChangedOn).ToArray();
         }
 
         protected void OnAddItem()
@@ -197,7 +197,8 @@
             {
                 Subject = task.Subject,
                 AssignedToId = memberId,
-                IsComplete = task.IsComplete
+                IsComplete = task.IsComplete,
+                LastChangedOn = DateTime.Now
             });
 
             if (result != null && result.TasksList != null && result.TasksList.Id != Guid.Empty)
@@ -208,6 +209,7 @@
                     Id = result.TasksList.Id,
                     Subject = result.TasksList.Subject,
                     IsComplete = result.TasksList.IsComplete,
+                    LastChangedOn = result.TasksList.LastChangedOn,
                     Member = familyMember
                 };
 

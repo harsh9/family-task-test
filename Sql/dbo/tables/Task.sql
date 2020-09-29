@@ -3,7 +3,6 @@ CREATE TABLE [dbo].[Task] (
     [Subject] VARCHAR(255) NOT NULL,
     [IsComplete] bit NOT NULL,
     [AssignedToId] UNIQUEIDENTIFIER,
-    CONSTRAINT fk_Task_Member_Id
-                        FOREIGN KEY ([AssignedToId])
-                          REFERENCES [dbo].[Member] ([Id])
+    [LastChangedOn] DATETIME DEFAULT ((GETDATE())) NOT NULL,
+    CONSTRAINT fk_Task_Member_Id FOREIGN KEY ([AssignedToId]) REFERENCES [dbo].[Member] ([Id])
 )

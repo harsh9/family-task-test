@@ -6,4 +6,5 @@ public class TaskModel
     public FamilyMember Member { get; set; }
     public string Subject { get; set; }
     public bool IsComplete { get; set; }
+    public DateTime LastChangedOn { get; set; }
 }
